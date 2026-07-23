@@ -30,29 +30,6 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* Print Styling */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #resultSection, #resultSection * {
-                visibility: visible;
-            }
-            #resultSection {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                box-shadow: none !important;
-                border: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            .no-print {
-                display: none !important;
-            }
-        }
     </style>
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col">
@@ -63,7 +40,7 @@
             <div class="flex items-center gap-3 sm:gap-4">
                 <!-- Logo Sekolah -->
                 <div class="bg-white p-1 rounded-xl shadow-md shrink-0 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center overflow-hidden border border-blue-700">
-                    <img src="https://lh3.googleusercontent.com/d/1iK1WvoU7dtIXC7X5Nw1TvxCESXzBeQOi" alt="Logo SMPN 38 Maluku Tengah" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/100x100/1e3a8a/ffffff?text=SMP38'">
+                    <img src="https://drive.google.com/file/d/1iK1WvoU7dtIXC7X5Nw1TvxCESXzBeQOi" alt="Logo SMPN 38 Maluku Tengah" class="w-full h-full object-contain" onerror="this.src='https://drive.google.com/file/d/1iK1WvoU7dtIXC7X5Nw1TvxCESXzBeQOi/100x100/1e3a8a/ffffff?text=SMP38'">
                 </div>
                 <div>
                     <h1 class="text-base sm:text-xl font-bold tracking-tight leading-tight">SMP NEGERI 38 MALUKU TENGAH</h1>
@@ -310,22 +287,16 @@
                         <p id="resAkhir" class="text-5xl font-black text-blue-700 z-10">0.00</p>
                         <p class="text-xs text-slate-400 mt-2 z-10">Skala 100</p>
                     </div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-center items-center relative overflow-hidden">
-                        <p class="text-sm text-slate-500 font-semibold uppercase tracking-wider mb-2 z-10">Mutu Pelayanan</p>
-                        <div id="resBadge" class="px-4 py-2 rounded-lg font-bold text-lg uppercase tracking-wide bg-green-100 text-green-700 border border-green-200 z-10">-</div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-center items-center">
+                        <p class="text-sm text-slate-500 font-semibold uppercase tracking-wider mb-2">Kategori Mutu</p>
+                        <div id="resBadge" class="px-4 py-2 rounded-lg font-bold text-xl uppercase tracking-wide">
+                            Loading...
+                        </div>
                     </div>
                 </div>
 
-                <div class="mt-10 flex flex-wrap justify-center gap-3 md:gap-4 no-print">
-                    <button onclick="cetakBukti()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                        Cetak Bukti (Print)
-                    </button>
-                    <button onclick="downloadBukti()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        Unduh Bukti (TXT)
-                    </button>
-                    <button id="btnKembali" class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2">
+                <div class="mt-10">
+                    <button id="btnKembali" class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-8 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 mx-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                         </svg>
@@ -839,40 +810,6 @@
             document.getElementById('detailModal').classList.add('hidden');
         }
 
-        // --- CETAK & DOWNLOAD BUKTI (USER) ---
-        function cetakBukti() {
-            window.print();
-        }
-
-        function downloadBukti() {
-            const nama = document.getElementById('resNama').innerText;
-            const rata = document.getElementById('resRata').innerText;
-            const akhir = document.getElementById('resAkhir').innerText;
-            const kategori = document.getElementById('resBadge').innerText;
-            
-            let content = `=========================================\n`;
-            content += ` BUKTI PARTISIPASI SURVEI KEPUASAN MASYARAKAT\n`;
-            content += ` SMP NEGERI 38 MALUKU TENGAH\n`;
-            content += `=========================================\n\n`;
-            content += `Nama Responden : ${nama}\n`;
-            content += `Waktu Submit   : ${new Date().toLocaleString('id-ID')}\n\n`;
-            content += `HASIL PENILAIAN:\n`;
-            content += `- Total Rata-rata : ${rata} / 4.00\n`;
-            content += `- Nilai Akhir     : ${akhir} / 100.00\n`;
-            content += `- Kategori Mutu   : ${kategori}\n\n`;
-            content += `Terima kasih atas partisipasi Anda dalam meningkatkan kualitas layanan publik sekolah.\n`;
-            content += `=========================================\n`;
-
-            const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.setAttribute('href', url);
-            a.setAttribute('download', `Bukti_SKM_${nama.replace(/\s+/g, '_')}.txt`);
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
         // --- EXPORT CSV ---
         function exportTableToCSV() {
             if (currentResponses.length === 0) {
@@ -1018,10 +955,8 @@
                     document.getElementById('resAkhir').innerText = nilaiAkhir.toFixed(2);
                     
                     const badgeEl = document.getElementById('resBadge');
-                    if (badgeEl) {
-                        badgeEl.innerText = categoryText;
-                        badgeEl.className = `px-4 py-2 rounded-lg font-bold text-base md:text-lg uppercase tracking-wide border ${categoryBgClass} ${categoryTextClass} border-opacity-50`;
-                    }
+                    badgeEl.innerText = categoryText;
+                    badgeEl.className = `px-4 py-2 rounded-lg font-bold text-lg md:text-xl uppercase tracking-wide border ${categoryBgClass} ${categoryTextClass} border-opacity-50`;
 
                     form.classList.add('hidden');
                     resultSection.classList.remove('hidden');
@@ -1034,32 +969,32 @@
                     btnSubmit.classList.remove('opacity-75', 'cursor-not-allowed');
                 };
 
-                const sendDataToSheet = async () => {
-                    if (SCRIPT_URL && SCRIPT_URL.trim() !== '') {
-                        const formData = new FormData();
-                        formData.append('nama', nama);
-                        formData.append('usia', usia);
-                        formData.append('pendidikan', pendidikan);
-                        formData.append('pekerjaan', pekerjaan);
-                        formData.append('saran', saran);
-                        for (let i = 1; i <= 9; i++) {
-                            formData.append('q' + i, qValues['q'+i]);
-                        }
-                        formData.append('rataRata', rataRata.toFixed(2));
-                        formData.append('nilaiAkhir', nilaiAkhir.toFixed(2));
-                        formData.append('kategori', categoryText);
-
-                        try {
-                            // Menggunakan mode no-cors agar tidak terhalang oleh pembatasan CORS redirect Google Apps Script
-                            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
-                        } catch (error) {
-                            console.warn('Catatan pengiriman Google Sheets:', error);
-                        }
+                if (SCRIPT_URL && SCRIPT_URL.trim() !== '') {
+                    const formData = new FormData();
+                    formData.append('nama', nama);
+                    formData.append('usia', usia);
+                    formData.append('pendidikan', pendidikan);
+                    formData.append('pekerjaan', pekerjaan);
+                    formData.append('saran', saran);
+                    for (let i = 1; i <= 9; i++) {
+                        formData.append('q' + i, qValues['q'+i]);
                     }
-                    processSuccess();
-                };
+                    formData.append('rataRata', rataRata.toFixed(2));
+                    formData.append('nilaiAkhir', nilaiAkhir.toFixed(2));
+                    formData.append('kategori', categoryText);
 
-                sendDataToSheet();
+                    fetch(SCRIPT_URL, { method: 'POST', body: formData })
+                        .then(response => {
+                            if (response.ok) processSuccess();
+                            else throw new Error('Network error');
+                        })
+                        .catch(error => {
+                            console.warn('Gagal kirim ke Google Sheets, tersimpan secara lokal:', error);
+                            processSuccess();
+                        });
+                } else {
+                    setTimeout(processSuccess, 1000); 
+                }
             });
 
             btnKembali.addEventListener('click', () => {
