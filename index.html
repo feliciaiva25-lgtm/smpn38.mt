@@ -310,6 +310,12 @@
                         <p id="resAkhir" class="text-5xl font-black text-blue-700 z-10">0.00</p>
                         <p class="text-xs text-slate-400 mt-2 z-10">Skala 100</p>
                     </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-center items-center relative overflow-hidden">
+                        <p class="text-sm text-slate-500 font-semibold uppercase tracking-wider mb-2 z-10">Mutu Pelayanan</p>
+                        <div id="resBadge" class="px-4 py-2 rounded-lg font-bold text-lg uppercase tracking-wide bg-green-100 text-green-700 border border-green-200 z-10">-</div>
+                    </div>
+                </div>
+
                 <div class="mt-10 flex flex-wrap justify-center gap-3 md:gap-4 no-print">
                     <button onclick="cetakBukti()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-md">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
@@ -1012,8 +1018,10 @@
                     document.getElementById('resAkhir').innerText = nilaiAkhir.toFixed(2);
                     
                     const badgeEl = document.getElementById('resBadge');
-                    badgeEl.innerText = categoryText;
-                    badgeEl.className = `px-4 py-2 rounded-lg font-bold text-lg md:text-xl uppercase tracking-wide border ${categoryBgClass} ${categoryTextClass} border-opacity-50`;
+                    if (badgeEl) {
+                        badgeEl.innerText = categoryText;
+                        badgeEl.className = `px-4 py-2 rounded-lg font-bold text-base md:text-lg uppercase tracking-wide border ${categoryBgClass} ${categoryTextClass} border-opacity-50`;
+                    }
 
                     form.classList.add('hidden');
                     resultSection.classList.remove('hidden');
@@ -1026,32 +1034,32 @@
                     btnSubmit.classList.remove('opacity-75', 'cursor-not-allowed');
                 };
 
-                if (SCRIPT_URL && SCRIPT_URL.trim() !== '') {
-                    const formData = new FormData();
-                    formData.append('nama', nama);
-                    formData.append('usia', usia);
-                    formData.append('pendidikan', pendidikan);
-                    formData.append('pekerjaan', pekerjaan);
-                    formData.append('saran', saran);
-                    for (let i = 1; i <= 9; i++) {
-                        formData.append('q' + i, qValues['q'+i]);
-                    }
-                    formData.append('rataRata', rataRata.toFixed(2));
-                    formData.append('nilaiAkhir', nilaiAkhir.toFixed(2));
-                    formData.append('kategori', categoryText);
+                const sendDataToSheet = async () => {
+                    if (SCRIPT_URL && SCRIPT_URL.trim() !== '') {
+                        const formData = new FormData();
+                        formData.append('nama', nama);
+                        formData.append('usia', usia);
+                        formData.append('pendidikan', pendidikan);
+                        formData.append('pekerjaan', pekerjaan);
+                        formData.append('saran', saran);
+                        for (let i = 1; i <= 9; i++) {
+                            formData.append('q' + i, qValues['q'+i]);
+                        }
+                        formData.append('rataRata', rataRata.toFixed(2));
+                        formData.append('nilaiAkhir', nilaiAkhir.toFixed(2));
+                        formData.append('kategori', categoryText);
 
-                    fetch(SCRIPT_URL, { method: 'POST', body: formData })
-                        .then(response => {
-                            if (response.ok) processSuccess();
-                            else throw new Error('Network error');
-                        })
-                        .catch(error => {
-                            console.warn('Gagal kirim ke Google Sheets, tersimpan secara lokal:', error);
-                            processSuccess();
-                        });
-                } else {
-                    setTimeout(processSuccess, 1000); 
-                }
+                        try {
+                            // Menggunakan mode no-cors agar tidak terhalang oleh pembatasan CORS redirect Google Apps Script
+                            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
+                        } catch (error) {
+                            console.warn('Catatan pengiriman Google Sheets:', error);
+                        }
+                    }
+                    processSuccess();
+                };
+
+                sendDataToSheet();
             });
 
             btnKembali.addEventListener('click', () => {
