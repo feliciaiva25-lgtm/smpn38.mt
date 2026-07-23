@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survei Kepuasan Masyarakat (SKM) - SMP Negeri 38 Maluku Tengah</title>
+    
+    <!-- Memuat Tailwind CSS untuk Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Memuat Font Google 'Inter' -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8fafc; /* Slate 50 */
+        }
+        /* Custom scrollbar */
+        textarea::-webkit-scrollbar, div::-webkit-scrollbar { width: 6px; height: 6px; }
+        textarea::-webkit-scrollbar-track, div::-webkit-scrollbar-track { background: #f1f5f9; }
+        textarea::-webkit-scrollbar-thumb, div::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        textarea::-webkit-scrollbar-thumb:hover, div::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Animasi Transisi Halus */
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Print Styling */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #resultSection, #resultSection * {
+                visibility: visible;
+            }
+            #resultSection {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="bg-blue-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 flex items-center justify-between">
+            <div class="flex items-center gap-3 sm:gap-4">
+                <!-- Logo Sekolah -->
+                <div class="bg-white p-1 rounded-xl shadow-md shrink-0 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center overflow-hidden border border-blue-700">
+                    <img src="https://lh3.googleusercontent.com/d/1iK1WvoU7dtIXC7X5Nw1TvxCESXzBeQOi" alt="Logo SMPN 38 Maluku Tengah" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/100x100/1e3a8a/ffffff?text=SMP38'">
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-xl font-bold tracking-tight leading-tight">SMP NEGERI 38 MALUKU TENGAH</h1>
+                    <p class="text-blue-200 text-xs sm:text-sm mt-0.5 font-medium">Survei Kepuasan Masyarakat (SKM) • Legalisir Ijazah</p>
+                </div>
+            </div>
+            
+            <!-- Tombol Login Admin (Kecil dengan Logo) -->
+            <button id="btnAdminLogin" onclick="openAdminModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-blue-800/80 hover:bg-blue-700 active:bg-blue-950 rounded-lg text-xs font-medium transition-colors border border-blue-600/50 group shrink-0 shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-300 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-blue-100 group-hover:text-white transition-colors">Admin</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Form Kuesioner -->
+        <form id="skmForm" class="space-y-8 fade-in">
+            
+            <!-- I. Data Responden -->
+            <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                    <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <span class="bg-blue-600 text-white text-sm w-6 h-6 flex items-center justify-center rounded-full">I</span> 
+                        Data Responden
+                    </h2>
+                </div>
+                <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label for="nama" class="block text-sm font-semibold text-slate-700 mb-1.5">Nama Lengkap</label>
+                        <input type="text" id="nama" required placeholder="Masukkan nama Anda" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700">
+                    </div>
+                    <div>
+                        <label for="usia" class="block text-sm font-semibold text-slate-700 mb-1.5">Usia (Tahun)</label>
+                        <input type="number" id="usia" min="10" max="100" required placeholder="Contoh: 25" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700">
+                    </div>
+                    <div>
+                        <label for="pendidikan" class="block text-sm font-semibold text-slate-700 mb-1.5">Pendidikan Terakhir</label>
+                        <select id="pendidikan" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700">
+                            <option value="" disabled selected>Pilih tingkat pendidikan</option>
+                            <option value="SD">SD/Sederajat</option>
+                            <option value="SMP">SMP/Sederajat</option>
+                            <option value="SMA">SMA/SMK/Sederajat</option>
+                            <option value="Diploma">Diploma (D1/D2/D3/D4)</option>
+                            <option value="S1">S1</option>
+                            <option value="S2/S3">S2/S3</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="pekerjaan" class="block text-sm font-semibold text-slate-700 mb-1.5">Pekerjaan</label>
+                        <input type="text" id="pekerjaan" required placeholder="Contoh: Wiraswasta, PNS, dll." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700">
+                    </div>
+                </div>
+            </section>
+
+            <!-- II. Kuesioner -->
+            <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-blue-50 px-6 py-5 border-b border-blue-100">
+                    <div>
+                        <h2 class="text-lg font-bold text-blue-900 flex items-center gap-2">
+                            <span class="bg-blue-700 text-white text-sm w-6 h-6 flex items-center justify-center rounded-full">II</span> 
+                            Daftar Pertanyaan (Kuesioner)
+                        </h2>
+                        <p class="text-sm text-blue-700 mt-2">Petunjuk: Berikan penilaian Anda terhadap pelayanan legalisir ijazah dengan memilih angka 1 hingga 4.</p>
+                    </div>
+                </div>
+                
+                <div class="divide-y divide-slate-100" id="questionsContainer">
+                    
+                    <!-- Q1 -->
+                    <div class="p-6 md:p-8 hover:bg-slate-50/50 transition-colors">
+                        <h3 class="text-slate-800 font-semibold mb-4 text-base md:text-lg leading-relaxed"><span class="text-blue-600 mr-1">1. Persyaratan:</span> Bagaimana pendapat Saudara tentang kesesuaian persyaratan administrasi (fotokopi ijazah, surat kuasa jika diwakilkan) dengan jenis pelayanan yang diberikan?</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            <label><input type="radio" name="q1" value="1" required class="peer sr-only">
+                                <div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all">
+                                    <span class="block font-black text-xl md:text-2xl mb-1">1</span><span class="text-xs md:text-sm font-medium leading-tight">Tidak Sesuai</span>
+                                </div>
+                            </label>
+                            <label><input type="radio" name="q1" value="2" required class="peer sr-only">
+                                <div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all">
+                                    <span class="block font-black text-xl md:text-2xl mb-1">2</span><span class="text-xs md:text-sm font-medium leading-tight">Kurang Sesuai</span>
+                                </div>
+                            </label>
+                            <label><input type="radio" name="q1" value="3" required class="peer sr-only">
+                                <div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all">
+                                    <span class="block font-black text-xl md:text-2xl mb-1">3</span><span class="text-xs md:text-sm font-medium leading-tight">Sesuai</span>
+                                </div>
+                            </label>
+                            <label><input type="radio" name="q1" value="4" required class="peer sr-only">
+                                <div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all">
+                                    <span class="block font-black text-xl md:text-2xl mb-1">4</span><span class="text-xs md:text-sm font-medium leading-tight">Sangat Sesuai</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="p-6 md:p-8 hover:bg-slate-50/50 transition-colors">
+                        <h3 class="text-slate-800 font-semibold mb-4 text-base md:text-lg leading-relaxed"><span class="text-blue-600 mr-1">2. Prosedur:</span> Bagaimana pendapat Saudara tentang kemudahan prosedur pelayanan legalisir di sekolah atau dinas pendidikan?</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            <label><input type="radio" name="q2" value="1" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">1</span><span class="text-xs md:text-sm font-medium leading-tight">Sangat Sulit</span></div></label>
+                            <label><input type="radio" name="q2" value="2" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">2</span><span class="text-xs md:text-sm font-medium leading-tight">Kurang Mudah</span></div></label>
+                            <label><input type="radio" name="q2" value="3" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">3</span><span class="text-xs md:text-sm font-medium leading-tight">Mudah</span></div></label>
+                            <label><input type="radio" name="q2" value="4" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">4</span><span class="text-xs md:text-sm font-medium leading-tight">Sangat Mudah</span></div></label>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="p-6 md:p-8 hover:bg-slate-50/50 transition-colors">
+                        <h3 class="text-slate-800 font-semibold mb-4 text-base md:text-lg leading-relaxed"><span class="text-blue-600 mr-1">3. Kecepatan Waktu:</span> Bagaimana pendapat Saudara tentang kecepatan waktu dalam proses penyelesaian legalisir ijazah?</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            <label><input type="radio" name="q3" value="1" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">1</span><span class="text-xs md:text-sm font-medium leading-tight">Sangat Lambat</span></div></label>
+                            <label><input type="radio" name="q3" value="2" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">2</span><span class="text-xs md:text-sm font-medium leading-tight">Lambat</span></div></label>
+                            <label><input type="radio" name="q3" value="3" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">3</span><span class="text-xs md:text-sm font-medium leading-tight">Cepat</span></div></label>
+                            <label><input type="radio" name="q3" value="4" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">4</span><span class="text-xs md:text-sm font-medium leading-tight">Sangat Cepat</span></div></label>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="p-6 md:p-8 hover:bg-slate-50/50 transition-colors">
+                        <h3 class="text-slate-800 font-semibold mb-4 text-base md:text-lg leading-relaxed"><span class="text-blue-600 mr-1">4. Tarif / Biaya:</span> Bagaimana pendapat Saudara tentang kewajaran biaya atau tidak adanya pungutan liar dalam pengurusan legalisir ijazah?</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            <label><input type="radio" name="q4" value="1" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">1</span><span class="text-xs md:text-sm font-medium leading-tight">Buruk / Pungli</span></div></label>
+                            <label><input type="radio" name="q4" value="2" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">2</span><span class="text-xs md:text-sm font-medium leading-tight">Kurang Wajar</span></div></label>
+                            <label><input type="radio" name="q4" value="3" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">3</span><span class="text-xs md:text-sm font-medium leading-tight">Wajar</span></div></label>
+                            <label><input type="radio" name="q4" value="4" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">4</span><span class="text-xs md:text-sm font-medium leading-tight">Gratis / Wajar</span></div></label>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="p-6 md:p-8 hover:bg-slate-50/50 transition-colors">
+                        <h3 class="text-slate-800 font-semibold mb-4 text-base md:text-lg leading-relaxed"><span class="text-blue-600 mr-1">5. Produk Spesifikasi Jenis Pelayanan:</span> Bagaimana pendapat Saudara tentang kesesuaian hasil akhir pelayanan legalisir (cap basah dan tanda tangan pejabat berwenang)?</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            <label><input type="radio" name="q5" value="1" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">1</span><span class="text-xs md:text-sm font-medium leading-tight">Tidak Sesuai</span></div></label>
+                            <label><input type="radio" name="q5" value="2" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">2</span><span class="text-xs md:text-sm font-medium leading-tight">Kurang Sesuai</span></div></label>
+                            <label><input type="radio" name="q5" value="3" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">3</span><span class="text-xs md:text-sm font-medium leading-tight">Sesuai</span></div></label>
+                            <label><input type="radio" name="q5" value="4" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">4</span><span class="text-xs md:text-sm font-medium leading-tight">Sangat Sesuai</span></div></label>
+                        </div>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="p-6 md:p-8 hover:bg-slate-50/50 transition-colors">
+                        <h3 class="text-slate-800 font-semibold mb-4 text-base md:text-lg leading-relaxed"><span class="text-blue-600 mr-1">6. Kompetensi Pelaksana:</span> Bagaimana pendapat Saudara tentang kemampuan, keterampilan, dan keramahan petugas dalam memberikan pelayanan?</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            <label><input type="radio" name="q6" value="1" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">1</span><span class="text-xs md:text-sm font-medium leading-tight">Sangat Buruk</span></div></label>
+                            <label><input type="radio" name="q6" value="2" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">2</span><span class="text-xs md:text-sm font-medium leading-tight">Kurang Mampu</span></div></label>
+                            <label><input type="radio" name="q6" value="3" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">3</span><span class="text-xs md:text-sm font-medium leading-tight">Mampu & Baik</span></div></label>
+                            <label><input type="radio" name="q6" value="4" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">4</span><span class="text-xs md:text-sm font-medium leading-tight">Sangat Mampu</span></div></label>
+                        </div>
+                    </div>
+
+                    <!-- Q7 -->
+                    <div class="p-6 md:p-8 hover:bg-slate-50/50 transition-colors">
+                        <h3 class="text-slate-800 font-semibold mb-4 text-base md:text-lg leading-relaxed"><span class="text-blue-600 mr-1">7. Perilaku Pelaksana:</span> Bagaimana pendapat Saudara tentang sikap petugas dalam memberikan pelayanan yang sopan dan tanpa diskriminasi?</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            <label><input type="radio" name="q7" value="1" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">1</span><span class="text-xs md:text-sm font-medium leading-tight">Diskriminatif</span></div></label>
+                            <label><input type="radio" name="q7" value="2" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">2</span><span class="text-xs md:text-sm font-medium leading-tight">Kurang Sopan</span></div></label>
+                            <label><input type="radio" name="q7" value="3" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">3</span><span class="text-xs md:text-sm font-medium leading-tight">Sopan & Baik</span></div></label>
+                            <label><input type="radio" name="q7" value="4" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">4</span><span class="text-xs md:text-sm font-medium leading-tight">Sangat Ramah</span></div></label>
+                        </div>
+                    </div>
+
+                    <!-- Q8 -->
+                    <div class="p-6 md:p-8 hover:bg-slate-50/50 transition-colors">
+                        <h3 class="text-slate-800 font-semibold mb-4 text-base md:text-lg leading-relaxed"><span class="text-blue-600 mr-1">8. Penanganan Pengaduan, Saran, dan Masukan:</span> Bagaimana pendapat Saudara tentang kemudahan penyampaian pengaduan dan respons petugas?</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            <label><input type="radio" name="q8" value="1" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">1</span><span class="text-xs md:text-sm font-medium leading-tight">Tidak Direspons</span></div></label>
+                            <label><input type="radio" name="q8" value="2" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">2</span><span class="text-xs md:text-sm font-medium leading-tight">Kurang Responsif</span></div></label>
+                            <label><input type="radio" name="q8" value="3" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">3</span><span class="text-xs md:text-sm font-medium leading-tight">Responsif</span></div></label>
+                            <label><input type="radio" name="q8" value="4" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">4</span><span class="text-xs md:text-sm font-medium leading-tight">Sangat Responsif</span></div></label>
+                        </div>
+                    </div>
+
+                    <!-- Q9 -->
+                    <div class="p-6 md:p-8 hover:bg-slate-50/50 transition-colors">
+                        <h3 class="text-slate-800 font-semibold mb-4 text-base md:text-lg leading-relaxed"><span class="text-blue-600 mr-1">9. Sarana dan Prasarana:</span> Bagaimana pendapat Saudara tentang kenyamanan ruang tunggu, kebersihan, serta fasilitas penunjang lainnya?</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            <label><input type="radio" name="q9" value="1" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">1</span><span class="text-xs md:text-sm font-medium leading-tight">Buruk / Kotor</span></div></label>
+                            <label><input type="radio" name="q9" value="2" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">2</span><span class="text-xs md:text-sm font-medium leading-tight">Kurang Nyaman</span></div></label>
+                            <label><input type="radio" name="q9" value="3" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">3</span><span class="text-xs md:text-sm font-medium leading-tight">Nyaman & Bersih</span></div></label>
+                            <label><input type="radio" name="q9" value="4" required class="peer sr-only"><div class="h-full border-2 border-slate-200 rounded-xl p-3 md:p-4 text-center peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all"><span class="block font-black text-xl md:text-2xl mb-1">4</span><span class="text-xs md:text-sm font-medium leading-tight">Sangat Nyaman</span></div></label>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- III. Saran & Masukan -->
+            <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                    <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <span class="bg-blue-600 text-white text-sm w-6 h-6 flex items-center justify-center rounded-full">III</span> 
+                        Kolom Saran dan Masukan
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <label for="saran" class="block text-sm font-medium text-slate-700 mb-3">Tuliskan saran atau kritik Anda untuk perbaikan layanan legalisir ijazah ke depannya:</label>
+                    <textarea id="saran" rows="4" placeholder="Ketik saran dan masukan Anda di sini..." class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700"></textarea>
+                </div>
+            </section>
+
+            <!-- Tombol Submit -->
+            <div class="flex justify-end pt-2 pb-10">
+                <button type="submit" id="btnSubmit" class="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-10 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all w-full md:w-auto flex justify-center items-center gap-2">
+                    <span id="btnText">Kirim Kuesioner</span>
+                    <svg id="btnIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    <!-- Spinner -->
+                    <svg id="btnSpinner" class="animate-spin hidden h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </div>
+        </form>
+
+        <!-- HASIL PENILAIAN (Setelah Submit) -->
+        <div id="resultSection" class="hidden space-y-8 fade-in">
+            <div class="bg-white rounded-3xl shadow-xl border-t-8 border-blue-600 overflow-hidden text-center p-8 md:p-12 relative">
+                <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6 shadow-inner">
+                    <svg class="h-12 w-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                
+                <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Terima Kasih, <span id="resNama" class="text-blue-700"></span>!</h2>
+                <p class="text-slate-600 text-lg max-w-2xl mx-auto">Penilaian Anda telah berhasil direkam. Partisipasi Anda sangat berarti bagi evaluasi dan peningkatan kualitas layanan kami.</p>
+
+                <!-- Score Dashboard -->
+                <div class="mt-10 p-6 md:p-8 bg-slate-50 rounded-2xl border border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-6 shadow-inner">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-center">
+                        <p class="text-sm text-slate-500 font-semibold uppercase tracking-wider mb-1">Total Rata-rata</p>
+                        <p id="resRata" class="text-4xl font-black text-slate-800">0.00</p>
+                        <p class="text-xs text-slate-400 mt-2">Dari 9 Unsur (Skala 4)</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-center relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-16 h-16 bg-blue-50 rounded-full z-0"></div>
+                        <p class="text-sm text-slate-500 font-semibold uppercase tracking-wider mb-1 z-10">Nilai Akhir Indeks</p>
+                        <p id="resAkhir" class="text-5xl font-black text-blue-700 z-10">0.00</p>
+                        <p class="text-xs text-slate-400 mt-2 z-10">Skala 100</p>
+                    </div>
+                <div class="mt-10 flex flex-wrap justify-center gap-3 md:gap-4 no-print">
+                    <button onclick="cetakBukti()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                        Cetak Bukti (Print)
+                    </button>
+                    <button onclick="downloadBukti()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Unduh Bukti (TXT)
+                    </button>
+                    <button id="btnKembali" class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                        </svg>
+                        Isi Kuesioner Baru
+                    </button>
+                </div>
+            </div>
+
+            <!-- IV. Indikator Penilaian -->
+            <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-10">
+                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                    <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <span class="bg-slate-600 text-white text-sm w-6 h-6 flex items-center justify-center rounded-full">IV</span> 
+                        Indikator Penilaian (Referensi)
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <p class="text-slate-600 mb-5 text-sm md:text-base leading-relaxed bg-blue-50 p-4 rounded-xl border border-blue-100">
+                        Nilai SKM dihitung menggunakan rata-rata dari seluruh 9 unsur pertanyaan. Nilai Akhir Indeks dikonversi ke skala 100 dengan rumus:<br>
+                        <strong class="text-blue-800 font-mono text-base block mt-2">Nilai Akhir = (Total Nilai Rata-rata) × 25</strong>
+                    </p>
+                    
+                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                        <table class="w-full text-sm text-left text-slate-600">
+                            <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+                                <tr>
+                                    <th scope="col" class="px-5 py-4 font-bold">Nilai Persepsi</th>
+                                    <th scope="col" class="px-5 py-4 font-bold">Nilai Interval Konversi (SKM)</th>
+                                    <th scope="col" class="px-5 py-4 font-bold text-center">Mutu Pelayanan</th>
+                                    <th scope="col" class="px-5 py-4 font-bold">Kategori Kinerja</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <tr class="bg-white"><td class="px-5 py-4">3,26 - 4,00</td><td class="px-5 py-4">81,26 - 100,00</td><td class="px-5 py-4 text-center font-black text-green-600 text-lg">A</td><td class="px-5 py-4 font-bold text-green-600">Sangat Baik</td></tr>
+                                <tr class="bg-white"><td class="px-5 py-4">2,51 - 3,25</td><td class="px-5 py-4">62,51 - 81,25</td><td class="px-5 py-4 text-center font-black text-blue-600 text-lg">B</td><td class="px-5 py-4 font-bold text-blue-600">Baik</td></tr>
+                                <tr class="bg-white"><td class="px-5 py-4">1,76 - 2,50</td><td class="px-5 py-4">43,75 - 62,50</td><td class="px-5 py-4 text-center font-black text-amber-500 text-lg">C</td><td class="px-5 py-4 font-bold text-amber-500">Kurang Baik</td></tr>
+                                <tr class="bg-white"><td class="px-5 py-4">1,00 - 1,75</td><td class="px-5 py-4">25,00 - 43,74</td><td class="px-5 py-4 text-center font-black text-red-600 text-lg">D</td><td class="px-5 py-4 font-bold text-red-600">Tidak Baik</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-sm mt-auto">
+        <p>&copy; 2026 Aplikasi Instrumen Pengukuran SKM. Dikembangkan untuk Pelayanan Publik.</p>
+    </footer>
+
+    <!-- MODAL / CONTAINER LOGIN ADMIN & DASHBOARD -->
+    <div id="adminModalOverlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden fade-in p-4">
+        
+        <!-- LOGIN BOX (DEFAULT) -->
+        <div id="adminLoginBox" class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-slate-100">
+            <div class="px-6 py-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" />
+                    </svg>
+                    Login Admin SKM
+                </h3>
+                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Username</label>
+                    <input type="text" id="adminUser" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-slate-700 text-sm" placeholder="admin">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Password</label>
+                    <input type="password" id="adminPass" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-slate-700 text-sm" placeholder="••••••••">
+                    <p class="text-xs text-slate-400 mt-1">Default: admin / admin38</p>
+                </div>
+                <div id="loginError" class="text-red-600 text-xs font-semibold hidden">Username atau password salah!</div>
+                <button onclick="handleAdminAuth()" class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-2.5 rounded-lg transition-colors shadow-sm">
+                    Masuk ke Dashboard
+                </button>
+            </div>
+        </div>
+
+        <!-- DASHBOARD ADMIN PANEL (MUNCUL SETELAH LOGIN) -->
+        <div id="adminDashboardBox" class="bg-white rounded-3xl shadow-2xl w-full max-w-5xl h-[88vh] flex flex-col overflow-hidden border border-slate-200 hidden">
+            <!-- Header Dashboard -->
+            <div class="px-6 py-4 bg-slate-900 text-white flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="bg-blue-600 p-2 rounded-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-lg leading-tight">Dashboard Admin SKM</h2>
+                        <p class="text-slate-400 text-xs">SMP Negeri 38 Maluku Tengah</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="fetchAdminData()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-blue-300 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        Refresh Data
+                    </button>
+                    <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="bg-slate-100 px-6 py-2 border-b border-slate-200 flex gap-2 shrink-0 overflow-x-auto">
+                <button onclick="switchAdminTab('stats')" id="tabBtnStats" class="px-4 py-2 bg-blue-600 text-white font-semibold text-sm rounded-xl shadow-sm transition-all whitespace-nowrap">Ringkasan & Statistik</button>
+                <button onclick="switchAdminTab('data')" id="tabBtnData" class="px-4 py-2 bg-white text-slate-700 hover:bg-slate-200 font-semibold text-sm rounded-xl transition-all whitespace-nowrap">Data Semua Survei</button>
+                <button onclick="switchAdminTab('settings')" id="tabBtnSettings" class="px-4 py-2 bg-white text-slate-700 hover:bg-slate-200 font-semibold text-sm rounded-xl transition-all whitespace-nowrap">Pengaturan Database</button>
+            </div>
+
+            <!-- Tab Content Area -->
+            <div class="p-6 overflow-y-auto flex-grow bg-slate-50">
+                
+                <!-- TAB 1: STATISTIK -->
+                <div id="adminTabStats" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                            <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Total Responden</p>
+                            <p id="statTotalRes" class="text-4xl font-black text-slate-800">0</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                            <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Rata-rata Indeks SKM</p>
+                            <p id="statAvgIndex" class="text-4xl font-black text-blue-600">0.00</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                            <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Mutu Pelayanan Umum</p>
+                            <p id="statMutu" class="text-3xl font-black text-emerald-600">-</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h4 class="font-bold text-slate-800 mb-4 text-base">Rata-Rata Penilaian Per Unsur (1 - 4)</h4>
+                        <div id="unsurBreakdown" class="space-y-3">
+                            <!-- Diisi via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: DATA SEMUA SURVEI -->
+                <div id="adminTabdata" class="space-y-4 hidden">
+                    <div class="flex flex-col sm:flex-row justify-between gap-3 items-center">
+                        <div class="w-full sm:w-72">
+                            <input type="text" id="searchTable" onkeyup="filterAdminTable()" placeholder="Cari nama responden..." class="w-full px-4 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <button onclick="exportTableToCSV()" class="w-full sm:w-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            Download CSV / Excel
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left text-slate-600" id="responsesTable">
+                                <thead class="text-xs text-slate-700 uppercase bg-slate-100 border-b border-slate-200">
+                                    <tr>
+                                        <th class="px-4 py-3">Waktu</th>
+                                        <th class="px-4 py-3">Nama Responden</th>
+                                        <th class="px-4 py-3">Usia</th>
+                                        <th class="px-4 py-3">Pendidikan</th>
+                                        <th class="px-4 py-3">Pekerjaan</th>
+                                        <th class="px-4 py-3 text-center">Nilai Akhir</th>
+                                        <th class="px-4 py-3 text-center">Mutu</th>
+                                        <th class="px-4 py-3 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody" class="divide-y divide-slate-100">
+                                    <!-- Diisi via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: PENGATURAN -->
+                <div id="adminTabSettings" class="space-y-6 hidden max-w-2xl">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                        <h4 class="font-bold text-slate-800 text-lg border-b pb-3">Konfigurasi Google Sheets Database</h4>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Google Apps Script Web App URL</label>
+                            <input type="text" id="inputScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Masukkan URL hasil Deploy Web App dari Google Apps Script Anda agar data survei tersimpan secara otomatis dan dapat ditarik ke dashboard admin ini.</p>
+                        </div>
+                        <div class="flex gap-3 pt-2">
+                            <button onclick="saveScriptUrl()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-sm transition-colors">
+                                Simpan Pengaturan
+                            </button>
+                            <button onclick="testConnection()" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-sm rounded-xl transition-colors">
+                                Test Koneksi
+                            </button>
+                        </div>
+                        <div id="settingStatus" class="text-xs font-semibold mt-2"></div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-900 space-y-2">
+                        <h5 class="font-bold flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            Catatan Penting Google Apps Script
+                        </h5>
+                        <p class="text-xs leading-relaxed">Agar data bisa dibaca di tab "Data Semua Survei", pastikan skrip Google Apps Script Anda mendukung fungsi <code class="bg-amber-100 px-1 py-0.5 rounded font-mono">doGet(e)</code> untuk mengembalikan data dalam format JSON selain fungsi <code class="bg-amber-100 px-1 py-0.5 rounded font-mono">doPost(e)</code>.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DETAIL RESPON (ADMIN) -->
+    <div id="detailModal" class="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200 fade-in">
+            <div class="px-6 py-4 bg-slate-900 text-white flex justify-between items-center">
+                <h3 class="font-bold text-base">Detail Jawaban Responden</h3>
+                <button onclick="closeDetailModal()" class="text-slate-400 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto" id="detailContent">
+                <!-- Diisi via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIKA JAVASCRIPT -->
+    <script>
+        // --- STORAGE & CONFIG ---
+        // SCRIPT_URL diambil dari localStorage jika ada, atau kosong
+        let SCRIPT_URL = localStorage.getItem('skm_script_url') || '';
+        
+        // Simpan data kuesioner lokal untuk cadangan/simulasi offline
+        let localResponses = JSON.parse(localStorage.getItem('skm_local_responses') || '[]');
+
+        // --- ADMIN AUTH & MODAL ---
+        function openAdminModal() {
+            document.getElementById('adminModalOverlay').classList.remove('hidden');
+            // Jika sudah login sebelumnya dalam sesi ini, langsung buka dashboard
+            if (sessionStorage.getItem('admin_logged_in') === 'true') {
+                showAdminDashboard();
+            } else {
+                document.getElementById('adminLoginBox').classList.remove('hidden');
+                document.getElementById('adminDashboardBox').classList.add('hidden');
+            }
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModalOverlay').classList.add('hidden');
+        }
+
+        function handleAdminAuth() {
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+            const errEl = document.getElementById('loginError');
+
+            if (user === 'admin' && (pass === 'admin38' || pass === 'admin')) {
+                errEl.classList.add('hidden');
+                sessionStorage.setItem('admin_logged_in', 'true');
+                showAdminDashboard();
+            } else {
+                errEl.classList.remove('hidden');
+            }
+        }
+
+        function showAdminDashboard() {
+            document.getElementById('adminLoginBox').classList.add('hidden');
+            document.getElementById('adminDashboardBox').classList.remove('hidden');
+            document.getElementById('inputScriptUrl').value = SCRIPT_URL;
+            fetchAdminData();
+        }
+
+        // --- ADMIN TABS SWITCHING ---
+        function switchAdminTab(tabName) {
+            const btnStats = document.getElementById('tabBtnStats');
+            const btnData = document.getElementById('tabBtnData');
+            const btnSettings = document.getElementById('tabBtnSettings');
+
+            const tabStats = document.getElementById('adminTabStats');
+            const tabData = document.getElementById('adminTabdata');
+            const tabSettings = document.getElementById('adminTabSettings');
+
+            // Reset semua
+            btnStats.className = "px-4 py-2 bg-white text-slate-700 hover:bg-slate-200 font-semibold text-sm rounded-xl transition-all whitespace-nowrap";
+            btnData.className = "px-4 py-2 bg-white text-slate-700 hover:bg-slate-200 font-semibold text-sm rounded-xl transition-all whitespace-nowrap";
+            btnSettings.className = "px-4 py-2 bg-white text-slate-700 hover:bg-slate-200 font-semibold text-sm rounded-xl transition-all whitespace-nowrap";
+
+            tabStats.classList.add('hidden');
+            tabData.classList.add('hidden');
+            tabSettings.classList.add('hidden');
+
+            if (tabName === 'stats') {
+                btnStats.className = "px-4 py-2 bg-blue-600 text-white font-semibold text-sm rounded-xl shadow-sm transition-all whitespace-nowrap";
+                tabStats.classList.remove('hidden');
+            } else if (tabName === 'data') {
+                btnData.className = "px-4 py-2 bg-blue-600 text-white font-semibold text-sm rounded-xl shadow-sm transition-all whitespace-nowrap";
+                tabData.classList.remove('hidden');
+            } else if (tabName === 'settings') {
+                btnSettings.className = "px-4 py-2 bg-blue-600 text-white font-semibold text-sm rounded-xl shadow-sm transition-all whitespace-nowrap";
+                tabSettings.classList.remove('hidden');
+            }
+        }
+
+        // --- FETCH & RENDER DATA ADMIN ---
+        let currentResponses = [];
+
+        function fetchAdminData() {
+            if (SCRIPT_URL && SCRIPT_URL.trim() !== '') {
+                // Coba ambil dari Google Sheets (jika endpoint doGet tersedia)
+                fetch(SCRIPT_URL)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (Array.isArray(data)) {
+                            currentResponses = data;
+                            renderAdminDashboard(data);
+                        } else {
+                            // Fallback ke local
+                            renderAdminDashboard(localResponses);
+                        }
+                    })
+                    .catch(err => {
+                        console.warn("Gagal fetch dari Google Sheets, menggunakan data lokal:", err);
+                        renderAdminDashboard(localResponses);
+                    });
+            } else {
+                renderAdminDashboard(localResponses);
+            }
+        }
+
+        function renderAdminDashboard(dataList) {
+            // 1. Statistik
+            const total = dataList.length;
+            document.getElementById('statTotalRes').innerText = total;
+
+            if (total === 0) {
+                document.getElementById('statAvgIndex').innerText = "0.00";
+                document.getElementById('statMutu').innerText = "-";
+                document.getElementById('unsurBreakdown').innerHTML = `<p class="text-slate-400 text-sm italic">Belum ada data survei yang masuk.</p>`;
+                document.getElementById('tableBody').innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-slate-400">Tidak ada data ditemukan.</td></tr>`;
+                currentResponses = [];
+                return;
+            }
+
+            let sumIndex = 0;
+            let qSums = [0,0,0,0,0,0,0,0,0];
+
+            dataList.forEach(item => {
+                sumIndex += parseFloat(item.nilaiAkhir || item['Nilai Akhir'] || 0);
+                for(let i=1; i<=9; i++) {
+                    qSums[i-1] += parseFloat(item['q'+i] || item[`Q${i} (Persyaratan)`] || item[`Q${i}`] || 0);
+                }
+            });
+
+            const avgIndex = sumIndex / total;
+            document.getElementById('statAvgIndex').innerText = avgIndex.toFixed(2);
+
+            let mutuText = "Sangat Baik (A)";
+            if (avgIndex >= 81.26) mutuText = "Sangat Baik (A)";
+            else if (avgIndex >= 62.51) mutuText = "Baik (B)";
+            else if (avgIndex >= 43.75) mutuText = "Kurang Baik (C)";
+            else mutuText = "Tidak Baik (D)";
+            document.getElementById('statMutu').innerText = mutuText;
+
+            // Breakdown Unsur
+            const unsurNames = [
+                "1. Persyaratan Pelayanan",
+                "2. Kemudahan Prosedur",
+                "3. Kecepatan Waktu",
+                "4. Kewajaran Tarif / Biaya",
+                "5. Kesesuaian Produk Spesifikasi",
+                "6. Kompetensi Petugas",
+                "7. Perilaku & Keramahan Petugas",
+                "8. Penanganan Pengaduan",
+                "9. Sarana dan Prasarana"
+            ];
+
+            let breakdownHTML = '';
+            for(let i=0; i<9; i++) {
+                const avgUnsur = (qSums[i] / total).toFixed(2);
+                const percent = (avgUnsur / 4) * 100;
+                breakdownHTML += `
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                            <span>${unsurNames[i]}</span>
+                            <span class="text-blue-600 font-bold">${avgUnsur} / 4.00</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                            <div class="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('unsurBreakdown').innerHTML = breakdownHTML;
+
+            // 2. Render Tabel Data
+            let tableHTML = '';
+            dataList.slice().reverse().forEach((item, index) => {
+                const waktu = item.waktu || item['Waktu Submit'] || '-';
+                const nama = item.nama || item['Nama'] || '-';
+                const usia = item.usia || item['Usia'] || '-';
+                const pend = item.pendidikan || item['Pendidikan'] || '-';
+                const pek = item.pekerjaan || item['Pekerjaan'] || '-';
+                const nilai = parseFloat(item.nilaiAkhir || item['Nilai Akhir'] || 0).toFixed(2);
+                const kat = item.kategori || item['Kategori Mutu'] || '-';
+
+                tableHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-4 py-3 text-xs text-slate-500">${waktu}</td>
+                        <td class="px-4 py-3 font-semibold text-slate-800">${nama}</td>
+                        <td class="px-4 py-3">${usia} thn</td>
+                        <td class="px-4 py-3">${pend}</td>
+                        <td class="px-4 py-3">${pek}</td>
+                        <td class="px-4 py-3 text-center font-bold text-blue-700">${nilai}</td>
+                        <td class="px-4 py-3 text-center"><span class="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700">${kat}</span></td>
+                        <td class="px-4 py-3 text-center">
+                            <button onclick="viewDetail(${dataList.length - 1 - index})" class="px-3 py-1 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 rounded-lg text-xs font-medium transition-colors">Detail</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('tableBody').innerHTML = tableHTML;
+            currentResponses = dataList;
+        }
+
+        function filterAdminTable() {
+            const query = document.getElementById('searchTable').value.toLowerCase();
+            const filtered = currentResponses.filter(item => {
+                const nama = (item.nama || item['Nama'] || '').toLowerCase();
+                const pek = (item.pekerjaan || item['Pekerjaan'] || '').toLowerCase();
+                return nama.includes(query) || pek.includes(query);
+            });
+            
+            let tableHTML = '';
+            filtered.slice().reverse().forEach((item, index) => {
+                const waktu = item.waktu || item['Waktu Submit'] || '-';
+                const nama = item.nama || item['Nama'] || '-';
+                const usia = item.usia || item['Usia'] || '-';
+                const pend = item.pendidikan || item['Pendidikan'] || '-';
+                const pek = item.pekerjaan || item['Pekerjaan'] || '-';
+                const nilai = parseFloat(item.nilaiAkhir || item['Nilai Akhir'] || 0).toFixed(2);
+                const kat = item.kategori || item['Kategori Mutu'] || '-';
+
+                tableHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-4 py-3 text-xs text-slate-500">${waktu}</td>
+                        <td class="px-4 py-3 font-semibold text-slate-800">${nama}</td>
+                        <td class="px-4 py-3">${usia} thn</td>
+                        <td class="px-4 py-3">${pend}</td>
+                        <td class="px-4 py-3">${pek}</td>
+                        <td class="px-4 py-3 text-center font-bold text-blue-700">${nilai}</td>
+                        <td class="px-4 py-3 text-center"><span class="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700">${kat}</span></td>
+                        <td class="px-4 py-3 text-center">
+                            <button onclick="viewDetail(${currentResponses.indexOf(item)})" class="px-3 py-1 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 rounded-lg text-xs font-medium transition-colors">Detail</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('tableBody').innerHTML = tableHTML;
+        }
+
+        function viewDetail(idx) {
+            const item = currentResponses[idx];
+            if (!item) return;
+
+            const content = `
+                <div class="space-y-3 text-sm">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <p class="font-bold text-slate-800">${item.nama || item['Nama']}</p>
+                        <p class="text-xs text-slate-500">${item.usia || item['Usia']} tahun • ${item.pendidikan || item['Pendidikan']} • ${item.pekerjaan || item['Pekerjaan']}</p>
+                        <p class="text-xs text-slate-400 mt-1">Waktu: ${item.waktu || item['Waktu Submit']}</p>
+                    </div>
+                    <div class="border-t pt-3 space-y-1.5">
+                        <p class="text-xs font-bold text-slate-600 uppercase">Nilai Jawaban Unsur (1-9):</p>
+                        <div class="grid grid-cols-3 gap-2 text-xs">
+                            <div class="bg-slate-100 p-2 rounded">Q1: <b>${item.q1 || item['Q1 (Persyaratan)'] || '-'}</b></div>
+                            <div class="bg-slate-100 p-2 rounded">Q2: <b>${item.q2 || item['Q2 (Prosedur)'] || '-'}</b></div>
+                            <div class="bg-slate-100 p-2 rounded">Q3: <b>${item.q3 || item['Q3 (Waktu)'] || '-'}</b></div>
+                            <div class="bg-slate-100 p-2 rounded">Q4: <b>${item.q4 || item['Q4 (Biaya)'] || '-'}</b></div>
+                            <div class="bg-slate-100 p-2 rounded">Q5: <b>${item.q5 || item['Q5 (Produk)'] || '-'}</b></div>
+                            <div class="bg-slate-100 p-2 rounded">Q6: <b>${item.q6 || item['Q6 (Kompetensi)'] || '-'}</b></div>
+                            <div class="bg-slate-100 p-2 rounded">Q7: <b>${item.q7 || item['Q7 (Perilaku)'] || '-'}</b></div>
+                            <div class="bg-slate-100 p-2 rounded">Q8: <b>${item.q8 || item['Q8 (Aduan)'] || '-'}</b></div>
+                            <div class="bg-slate-100 p-2 rounded">Q9: <b>${item.q9 || item['Q9 (Sarpras)'] || '-'}</b></div>
+                        </div>
+                    </div>
+                    <div class="border-t pt-3">
+                        <p class="text-xs font-bold text-slate-600 uppercase mb-1">Saran / Masukan:</p>
+                        <p class="bg-blue-50 p-3 rounded-xl text-slate-700 italic text-xs leading-relaxed">"${item.saran || item['Saran/Masukan'] || '-'}"</p>
+                    </div>
+                    <div class="border-t pt-3 flex justify-between items-center bg-slate-50 p-3 rounded-xl">
+                        <div>
+                            <p class="text-xs text-slate-500">Nilai Akhir Indeks</p>
+                            <p class="text-lg font-black text-blue-700">${parseFloat(item.nilaiAkhir || item['Nilai Akhir'] || 0).toFixed(2)}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Kategori Mutu</p>
+                            <span class="px-3 py-1 rounded-lg font-bold text-sm bg-green-100 text-green-700">${item.kategori || item['Kategori Mutu'] || '-'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('detailContent').innerHTML = content;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        // --- CETAK & DOWNLOAD BUKTI (USER) ---
+        function cetakBukti() {
+            window.print();
+        }
+
+        function downloadBukti() {
+            const nama = document.getElementById('resNama').innerText;
+            const rata = document.getElementById('resRata').innerText;
+            const akhir = document.getElementById('resAkhir').innerText;
+            const kategori = document.getElementById('resBadge').innerText;
+            
+            let content = `=========================================\n`;
+            content += ` BUKTI PARTISIPASI SURVEI KEPUASAN MASYARAKAT\n`;
+            content += ` SMP NEGERI 38 MALUKU TENGAH\n`;
+            content += `=========================================\n\n`;
+            content += `Nama Responden : ${nama}\n`;
+            content += `Waktu Submit   : ${new Date().toLocaleString('id-ID')}\n\n`;
+            content += `HASIL PENILAIAN:\n`;
+            content += `- Total Rata-rata : ${rata} / 4.00\n`;
+            content += `- Nilai Akhir     : ${akhir} / 100.00\n`;
+            content += `- Kategori Mutu   : ${kategori}\n\n`;
+            content += `Terima kasih atas partisipasi Anda dalam meningkatkan kualitas layanan publik sekolah.\n`;
+            content += `=========================================\n`;
+
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `Bukti_SKM_${nama.replace(/\s+/g, '_')}.txt`);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // --- EXPORT CSV ---
+        function exportTableToCSV() {
+            if (currentResponses.length === 0) {
+                alert('Tidak ada data untuk diexport.');
+                return;
+            }
+            let csv = 'Waktu,Nama,Usia,Pendidikan,Pekerjaan,Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,RataRata,NilaiAkhir,Kategori,Saran\n';
+            currentResponses.forEach(item => {
+                csv += `"${item.waktu || item['Waktu Submit'] || ''}","${item.nama || item['Nama'] || ''}",${item.usia || item['Usia'] || ''},"${item.pendidikan || item['Pendidikan'] || ''}","${item.pekerjaan || item['Pekerjaan'] || ''}",${item.q1 || item['Q1 (Persyaratan)'] || 0},${item.q2 || item['Q2 (Prosedur)'] || 0},${item.q3 || item['Q3 (Waktu)'] || 0},${item.q4 || item['Q4 (Biaya)'] || 0},${item.q5 || item['Q5 (Produk)'] || 0},${item.q6 || item['Q6 (Kompetensi)'] || 0},${item.q7 || item['Q7 (Perilaku)'] || 0},${item.q8 || item['Q8 (Aduan)'] || 0},${item.q9 || item['Q9 (Sarpras)'] || 0},${item.rataRata || item['Rata-Rata'] || 0},${item.nilaiAkhir || item['Nilai Akhir'] || 0},"${item.kategori || item['Kategori Mutu'] || ''}","${(item.saran || item['Saran/Masukan'] || '').replace(/"/g, '""')}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'Data_Survei_SKM_SMPN38.csv');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // --- SETTINGS (SCRIPT_URL) ---
+        function saveScriptUrl() {
+            const url = document.getElementById('inputScriptUrl').value.trim();
+            SCRIPT_URL = url;
+            localStorage.setItem('skm_script_url', url);
+            const statusEl = document.getElementById('settingStatus');
+            statusEl.innerText = "Pengaturan berhasil disimpan!";
+            statusEl.className = "text-xs font-semibold mt-2 text-emerald-600";
+            setTimeout(() => { statusEl.innerText = ""; }, 3000);
+        }
+
+        function testConnection() {
+            const url = document.getElementById('inputScriptUrl').value.trim();
+            const statusEl = document.getElementById('settingStatus');
+            if (!url) {
+                statusEl.innerText = "URL masih kosong!";
+                statusEl.className = "text-xs font-semibold mt-2 text-red-600";
+                return;
+            }
+            statusEl.innerText = "Menghubungkan ke Google Sheets...";
+            statusEl.className = "text-xs font-semibold mt-2 text-blue-600";
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    statusEl.innerText = "Koneksi Berhasil! Endpoint merespon dengan baik.";
+                    statusEl.className = "text-xs font-semibold mt-2 text-emerald-600";
+                })
+                .catch(err => {
+                    statusEl.innerText = "Koneksi gagal atau format doGet belum diatur di Apps Script.";
+                    statusEl.className = "text-xs font-semibold mt-2 text-amber-600";
+                });
+        }
+
+        // --- SUBMISSION LOGIC (FRONTEND FORM) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('skmForm');
+            const resultSection = document.getElementById('resultSection');
+            const btnKembali = document.getElementById('btnKembali');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); 
+                
+                const btnSubmit = document.getElementById('btnSubmit');
+                const btnText = document.getElementById('btnText');
+                const btnIcon = document.getElementById('btnIcon');
+                const btnSpinner = document.getElementById('btnSpinner');
+                
+                const originalText = btnText.innerText;
+                btnText.innerText = 'Menyimpan Data...';
+                btnIcon.classList.add('hidden');
+                btnSpinner.classList.remove('hidden');
+                btnSubmit.disabled = true;
+                btnSubmit.classList.add('opacity-75', 'cursor-not-allowed');
+
+                const nama = document.getElementById('nama').value;
+                const usia = document.getElementById('usia').value;
+                const pendidikan = document.getElementById('pendidikan').value;
+                const pekerjaan = document.getElementById('pekerjaan').value;
+                const saran = document.getElementById('saran').value || '-';
+                
+                let totalScore = 0;
+                let qValues = {};
+                for (let i = 1; i <= 9; i++) {
+                    const radios = document.getElementsByName('q' + i);
+                    let qValue = 0;
+                    for (const radio of radios) {
+                        if (radio.checked) {
+                            qValue = parseFloat(radio.value);
+                            break;
+                        }
+                    }
+                    qValues['q'+i] = qValue;
+                    totalScore += qValue;
+                }
+
+                const rataRata = totalScore / 9;
+                const nilaiAkhir = rataRata * 25;
+
+                let categoryText = "";
+                let categoryBgClass = "";
+                let categoryTextClass = "";
+
+                if (nilaiAkhir >= 81.26) {
+                    categoryText = "Sangat Baik (A)";
+                    categoryBgClass = "bg-green-100";
+                    categoryTextClass = "text-green-700";
+                } else if (nilaiAkhir >= 62.51) {
+                    categoryText = "Baik (B)";
+                    categoryBgClass = "bg-blue-100";
+                    categoryTextClass = "text-blue-700";
+                } else if (nilaiAkhir >= 43.75) {
+                    categoryText = "Kurang Baik (C)";
+                    categoryBgClass = "bg-amber-100";
+                    categoryTextClass = "text-amber-700";
+                } else {
+                    categoryText = "Tidak Baik (D)";
+                    categoryBgClass = "bg-red-100";
+                    categoryTextClass = "text-red-700";
+                }
+
+                const newRecord = {
+                    waktu: new Date().toLocaleString('id-ID'),
+                    nama: nama,
+                    usia: usia,
+                    pendidikan: pendidikan,
+                    pekerjaan: pekerjaan,
+                    ...qValues,
+                    rataRata: rataRata.toFixed(2),
+                    nilaiAkhir: nilaiAkhir.toFixed(2),
+                    kategori: categoryText,
+                    saran: saran
+                };
+
+                // Simpan ke local responses untuk cadangan offline
+                localResponses.push(newRecord);
+                localStorage.setItem('skm_local_responses', JSON.stringify(localResponses));
+
+                const processSuccess = () => {
+                    document.getElementById('resNama').innerText = nama;
+                    document.getElementById('resRata').innerText = rataRata.toFixed(2);
+                    document.getElementById('resAkhir').innerText = nilaiAkhir.toFixed(2);
+                    
+                    const badgeEl = document.getElementById('resBadge');
+                    badgeEl.innerText = categoryText;
+                    badgeEl.className = `px-4 py-2 rounded-lg font-bold text-lg md:text-xl uppercase tracking-wide border ${categoryBgClass} ${categoryTextClass} border-opacity-50`;
+
+                    form.classList.add('hidden');
+                    resultSection.classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                    btnText.innerText = originalText;
+                    btnIcon.classList.remove('hidden');
+                    btnSpinner.classList.add('hidden');
+                    btnSubmit.disabled = false;
+                    btnSubmit.classList.remove('opacity-75', 'cursor-not-allowed');
+                };
+
+                if (SCRIPT_URL && SCRIPT_URL.trim() !== '') {
+                    const formData = new FormData();
+                    formData.append('nama', nama);
+                    formData.append('usia', usia);
+                    formData.append('pendidikan', pendidikan);
+                    formData.append('pekerjaan', pekerjaan);
+                    formData.append('saran', saran);
+                    for (let i = 1; i <= 9; i++) {
+                        formData.append('q' + i, qValues['q'+i]);
+                    }
+                    formData.append('rataRata', rataRata.toFixed(2));
+                    formData.append('nilaiAkhir', nilaiAkhir.toFixed(2));
+                    formData.append('kategori', categoryText);
+
+                    fetch(SCRIPT_URL, { method: 'POST', body: formData })
+                        .then(response => {
+                            if (response.ok) processSuccess();
+                            else throw new Error('Network error');
+                        })
+                        .catch(error => {
+                            console.warn('Gagal kirim ke Google Sheets, tersimpan secara lokal:', error);
+                            processSuccess();
+                        });
+                } else {
+                    setTimeout(processSuccess, 1000); 
+                }
+            });
+
+            btnKembali.addEventListener('click', () => {
+                form.reset();
+                resultSection.classList.add('hidden');
+                form.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
